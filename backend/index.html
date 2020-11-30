@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table{
+        background-color: aqua;
+    }
+    td{
+        font-style: italic;
+    }
+</style>
+<body>
+    <form method="POST">
+        <input type="text" name="usn" id="usn">
+    </form>
+    <button id="get">get</button>
+    <div id="put"></div>
+</body>
+<script>
+    document.getElementById('get').addEventListener('click',getData);
+    function getData(){
+        let number=document.getElementById('usn').value;
+        console.log(typeof number)
+        fetch('http://localhost:8000/get/',{
+            method:'POST',
+            body:JSON.stringify({value:number}) 
+        })
+        .then(res=>res.json())
+        .then(data=>{console.log(data);
+        console.log('student',data['student'][0]);
+
+        
+        let element='<table>';
+        for( i in data){
+            element+='<tr>';
+                for(j in data[i][0]){
+                if((j!='id' && j!='usn_id')||(j!='id' && j!='usn_id')){
+                    element+='<td>'+data[i][0][j]+'</td>';
+                }
+            }
+            element+='</td>';
+        }
+        element+='</table>';
+        document.getElementById('put').innerHTML=element;
+        });
+        
+    }
+</script>
+</html>
